@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html id="html" lang="en-US">
+
+<head>
+  <!--   <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@500&family=Italianno&family=Kalam:wght@300;400&family=Montserrat&family=Sriracha&family=Yesteryear&display=swap"
+    rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+ 
+  <link href="style.css" rel="stylesheet" type="text/css" />
+
+  <link rel="stylesheet" href="atom-one-light.min.css">
+<script src="highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+  <style>
+  </style>
+</head>
+
+<!-- <body style="margin: 0;padding: 0;border: 0;font-family:'Times New Roman', Times, serif, sans-serif;" id="body"> -->
+
+<body style="margin: 0;padding: 0;border: 0;" id="body">
+
+
+<div style="margin: 33px;">  
+<pre>
+    <code>
+
+#include &ltcstdio&gt
+#include &ltiostream&gt
+#include &ltstring&gt
+#include &ltstdlib.h&gt
+using namespace std;
+#include &ltstddef.h&gt
+
+int x[11],y[11];
+int B_k[11];
+int C_k[11];
+int nKI[11][11];
+int KI[11][11];
+float O[11];
+int C=1;
+int result,R;
+int a[12];
+int nx[11];  //nx for a new set of x
+int k;
+int e;
+int ix[11][11];
+float check[11]; //*/
+
+
+int Inputing(){
+  string O;
+  for (int i=0;i&lt11;i++){
+    if (i==10){
+      x[10]=100100;
+      break;
+    }
+
+  cout&lt&lt"(";
+  cin&gt&gtx[i];
+  if (x[i] == 100100){
+    system("cls");
+    cout&lt&ltO;
+    break;
+  }
+  system("cls"); //clear screen
+  O += "("+to_string(x[i])+",";
+  cout&lt&ltO;
+  cin&gt&ltgty[i];
+  system("cls");
+  O += to_string(y[i])+")";
+  cout&lt&ltO;
+}
+
+cout&lt&ltendl&lt&lt"exit"&lt&ltendl&lt&ltendl;
+
+//for (int i=0;i&lt11;i++){
+//  printf("(%d,%d)",x[i],y[i]);
+//}
+  return 0;
+}
+
+void comb(int m, int n){
+  for (int i=m;i&gt=n;i--){
+    a[n]=i;
+    if (n&gt1){
+      comb(i-1,n-1);
+    }else{
+      result=1;
+      for (int j=a[0];j&gt0;j--){
+        //printf("%d,",a[j]-1);
+        result *= nx[a[j]-1];
+        //cout&lt&ltresult;
+      }
+      R += result;
+      //cout&lt&ltendl;
+    }
+  }
+  //cout&lt&ltendl&lt&ltR&lt&ltendl;
+}
+           
+int Judging(){
+// x[0]=1;y[0]=1;x[1]=2;y[1]=2;x[2]=3;y[2]=10;x[3]=100100;
+
+  int o; //o is the number of terms that need to times for one value of KI; o=n;
+
+  for (int in=0;in&lt11;in++){  //calculate for e
+    if (x[in] == 100100){
+      e = in-1;
+    }
+  }
+
+  for (k=0;k&lte+1;k++){  //changing terms  expanding polynomial
+    o=1;
+    
+    for (int in=0;in&lt11;in++){  //change the first term into 1  (x to the e)
+      KI[k][e] = 1;
+    }
+      
+    int b=0;
+    for (int in=0;in&lt11;in++){
+      if (in == k){
+        b++;
+      }
+      nx[in] = -x[b];
+      b++;
+    }
+/*
+    for (int in=0;in&lt11;in++){  //checking
+      printf("nx[%d]=%d",in,nx[in]);
+      cout&lt&ltendl;
+    }
+*/
+
+    for (int in=e-1;in&gt-1;in--){  //changing index  changing the other terms  e-1 is because KI[k][e] has been set
+      result = 1;
+      R = 0;
+      a[0]=o;
+      comb(e,o); //5≥È3£∫“ÚŒ™À„…œ0À˘“‘e=4£¨“™º”1
+      o++;
+      cout&lt&ltR&lt&ltendl&lt&ltendl;
+      KI[k][in]=R;
+    }
+    cout&lt&lt"term "&lt&ltk&lt&ltendl&lt&ltendl;
+  }
+
+  cout&lt&ltendl&lt&ltendl;
+  for (int in=0;in&lt11;in++){
+    for (int inter=0;inter&lt11;inter++){
+      printf("KI[%d][%d]=%d",in,inter,KI[in][inter]);
+      cout&lt&ltendl;
+    }
+  }
+  cout&lt&ltendl&lt&ltendl;
+  return 0;
+}
+
+int Bk(){
+             
+  for (int k=0;k&lte+1;k++){
+    int in=1,inte; //interim variable
+    for (int j=0;j&lte+1;j++){
+      if (j == k){
+        //cout&lt&lt"pass"&lt&ltendl;
+        continue;
+      }
+
+      inte = x[k] - x[j];
+      in *= inte;
+    }
+    B_k[k]=in;
+    in=1;
+  }
+
+  for (int a=0;a&lt11;a++){
+    printf("B_k[%d]=%d",a,B_k[a]);
+    cout&lt&ltendl;
+  }
+
+    return 0;
+}
+
+int Ck(){
+//x[0]=1;y[0]=1;x[1]=2;y[1]=2;x[2]=3;y[2]=10;x[3]=100100;
+//B_k[0]=2;B_k[1]=-1;B_k[2]=2;
+
+  C=1;
+
+  for (int in=0;in&lt11;in++){
+    if (B_k[in] == 0){
+      break;
+    }
+
+    C *= B_k[in];
+  }
+  if (C&lt0){C= -C;}
+  printf("C=%d",C);
+  cout&lt&ltendl;
+
+  for (int in=0;in&lt11;in++){
+    if (B_k[in] == 0){
+      break;
+    }
+
+    C_k[in] = C / B_k[in];
+  }
+
+  for (int in=0;in&lt11;in++){
+    printf("C_k[%d]=%d",in,C_k[in]);
+    cout&lt&ltendl;
+  }
+           
+  cout&lt&ltendl&lt&ltendl;
+
+  return 0;
+}
+
+int Dk(){
+/*
+x[0]=1;y[0]=1;x[1]=2;y[1]=2;x[2]=3;y[2]=10;x[3]=100100;
+B_k[0]=-2;B_k[1]=1;B_k[2]=-2;
+C_k[0]=2;C_k[1]=-4;C_k[2]=2;
+//k=3;
+KI[0][2]=1;KI[0][1]=-5;KI[0][0]=6;
+KI[1][2]=1;KI[1][1]=-4;KI[1][0]=3;
+KI[2][2]=1;KI[2][1]=-3;KI[2][0]=2;
+*/
+
+  for (int in=0;in&lt11;in++){    //in and inter are for "interim"
+    for (int inter=0;inter&lt11;inter++){
+      nKI[in][inter] = KI[in][inter];
+    }
+  }
+
+  for (int in=0;in&lt11;in++){    //term
+    for (int inter=0;inter&lt11;inter++){    //index
+      nKI[in][inter] *= y[in];
+    }
+  }
+
+  for (int in=0;in&lt11;in++){    //in and inter are for "interim"
+    for (int inter=0;inter&lt11;inter++){
+
+      nKI[in][inter] *= C_k[in];
+
+    }
+  }
+
+  for (int in=0;in&lt11;in++){
+    for (int inter=0;inter&lt11;inter++){
+      printf("nKI[%d][%d]=%d",in,inter,nKI[in][inter]);
+      cout&lt&ltendl;
+    }
+  }
+
+  cout&lt&ltendl&lt&ltendl;
+
+  return 0;
+}
+
+int Outputing(){
+/*
+x[0]=1;y[0]=1;x[1]=2;y[1]=2;x[2]=3;y[2]=10;x[3]=100100;
+B_k[0]=-2;B_k[1]=1;B_k[2]=-2;
+C_k[0]=-2;C_k[1]=4;C_k[2]=-2;
+nKI[0][2]=2;nKI[0][1]=-10;nKI[0][0]=12;
+nKI[1][2]=-8;nKI[1][1]=32;nKI[1][0]=-24;
+nKI[2][2]=20;nKI[2][1]=-60;nKI[2][0]=40;
+C=4;
+*/
+
+  for (int in=0;in&lt11;in++){    //for changing index
+    for (int inter=0;inter&lt11;inter++){    //for changing terms
+      O[in] += nKI[inter][in];
+
+    }
+  }
+
+  for (int in=0;in&lt11;in++){
+    O[in] /= C;
+  }
+
+  for (int in=0;in&lt11;in++){
+    printf("O[%d]=%g",in,O[in]);
+    cout&lt&ltendl;
+  }
+
+  system("cls");
+
+  cout&lt&ltendl&lt&lt"Your Input Was:"&lt&ltendl&lt&ltendl;
+  for (int in=0;in&lt11;in++){
+    printf("Term %2d    (%2d ,%2d )",in,x[in],y[in]);
+    cout&lt&ltendl;
+  }
+  cout&lt&ltendl&lt&ltendl&lt&lt"The Function P:"&lt&ltendl&lt&ltendl;
+
+  bool first=true;
+  for (int in=10;in&gt-1;in--){
+    if (O[in] == 0){
+      continue;
+    }
+
+    if (first == true){    //first term
+      if (in == 0){
+        printf("P(x) = (%g)",O[in]);
+        first = false;
+        continue;
+      }else{
+        if (in == 1){
+          printf("P(x) = (%g)(x)",O[in]);
+          first = false;
+          continue;
+        }
+        printf("P(x) = (%g)(x^%d)",O[in],in);
+        first = false;
+        continue;
+      }
+    }
+
+    if (in == 1){
+      printf(" + (%g)(x)",O[in]);
+      continue;
+    }
+
+    if (in == 0){
+      printf(" + (%g)",O[in]);
+      continue;
+    }
+    printf(" + (%g)(x^%d)",O[in],in);
+  }
+    
+  cout&lt&ltendl&lt&ltendl&lt&ltendl;
+  return 0;
+}
+
+int Checking(){
+/*
+x[0]=1;y[0]=1;x[1]=2;y[1]=2;x[2]=3;y[2]=10;x[3]=100100;
+O[0]=7;O[1]=-9.5;O[2]=3.5;
+k=3;e=2;
+*/
+
+
+  //calculating
+  for (int in=0;in&ltk;in++){    //changing terms
+    ix[in][1]=x[in];
+    ix[in][0]=1;
+    
+    for (int inter=2;inter&lt11;inter++){    //changing index
+      ix[in][inter] = ix[in][inter-1]*x[in];
+    }
+  }
+
+/*
+  for (int in=0;in&lt11;in++){
+    for (int inter=0;inter&lt11;inter++){
+      printf("ix[%d][%d]=%d",in,inter,ix[in][inter]);
+      cout&lt&ltendl;
+    }
+  }
+*/
+
+  for (int in=0;in&ltk;in++){    //changing terms
+    for (int inter=0;inter&ltk;inter++){    //changing index
+      check[in] += O[inter]*ix[in][inter];
+    }
+  }
+  for(int in=0;in&lt11;in++){
+    printf("check[%d]=%g",in,check[in]);
+    cout&lt&ltendl;
+  }
+
+
+  //judging:
+  //check[2]=9; 
+  int error=0;
+  for (int in=0;in&lt11;in++){
+    if (in&gt=k){
+      printf("Term%4d    None",in);
+      cout&lt&ltendl;
+      continue;
+    }
+    if (check[in]==y[in]){
+      printf("Term%4d    Correct",in);
+      cout&lt&ltendl;
+      continue;
+    }else if(check[in]&lty[in]+0.5 && check[in]&gty[in]-0.5){
+      printf("Term%4d    Almost",in);
+      cout&lt&ltendl;
+    }else{
+      printf("Term%4d    Incorrect",in);
+      cout&lt&ltendl;
+      error++;
+    }
+  }
+  //cout&lt&lterror; //
+  cout&lt&ltendl&lt&ltendl;
+
+  float ab; //
+  //error=3;
+ /*
+  if (error==0){
+    cout&lt&lt"100% Correct";
+
+  }else if (error != k){
+    ab = error * (100/k);
+    //ab=1.0010;
+    //cout&lt&ltab&lt&ltendl;
+    printf("%g%% Correct",ab); 
+  
+  }else{
+    cout&lt&lt"0% Correct";
+  }
+
+  cout&lt&ltendl&lt&ltendl&lt&ltendl;
+// */
+  return 0;
+}
+
+
+
+int main(){
+  Inputing();
+  Judging();
+  Bk();
+  Ck();
+  Dk();
+  Outputing();
+
+  string aa;
+  for (;;){
+    cin&gt&gtaa;
+    if (aa == "quit"){
+      system("pause");
+      return 0;
+    }
+    else if (aa == "check"){
+      Checking();
+    }
+    else if (aa == "graph"){
+      //Graphing();
+    }else{
+      cout&lt&lt"Please enter:"&lt&ltendl&lt&lt"1.check"&lt&ltendl&lt&lt"2.graph"&lt&ltendl&lt&lt"3.quit"&lt&ltendl&lt&ltendl&lt&ltendl;
+    }
+  }
+
+  cout&lt&ltendl&lt&ltendl&lt&ltendl&lt&ltendl&lt&ltendl;
+  return 0;
+}
+      
+  </code>
+</pre>
+</div>
+
+
+      <!--  right margin -->
+      <div style="width: 50px;display: inline-block;" id="rightMargin">
+        <p style="color: transparent;">t</p>
+      </div>
+
+    </div>
+  </section>
+
+
+
+
+  
+
+
+
+
+  
+  <!--   footer -->
+  <br><br><br><br><br>
+  <section id="hp2" style="position: relative;vertical-align: middle;">
+    <img style="margin: 0;" src="images/footer.jpeg">
+    <h1
+      style="color: rgba(255, 255, 255, 0.07); position: absolute; z-index: 1; text-align: center;top: 50%; left: 50%;transform: translate(-50%, -50%);">
+      Website Created By Tom Fang</h1>
+  </section>
+
+
+
+
+  <!--   </div> -->
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
